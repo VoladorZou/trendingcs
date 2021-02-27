@@ -18,6 +18,7 @@
 
 <script>
   import {login} from '../api'
+  import { mapActions } from "vuex";
   
   export default {
     data() {
@@ -43,7 +44,6 @@
       };
       return {
         showLoginForm: false,
-        // userName: null,
         userLogin: {
           phone: '',
           password: ''
@@ -59,8 +59,9 @@
       };
     },
     methods: {
+      ...mapActions(["setUser", "setLoginState"]),
       submitForm(formName) {
-        let that = this;
+        // let that = this;
         this.$refs[formName].validate((valid) => {
           if (valid) {
             // var qs = require('qs');
@@ -73,18 +74,23 @@
               "userpassword": this.userLogin.password
             };
             login(user).then(res => {
-              console.log(res.data);
-              that.userLogin = res.data;
+              // console.log(res.data);
+              // that.userLogin = res.data;
+              // 登录信息存到本地
+                let user = JSON.stringify(res.data.data);
+                // console.log(user);
+                localStorage.setItem("user", user);
+                // 登录信息存到vuex
+                this.setUser(res.data.data);
+                this.setLoginState(true);
               this.$emit('input',this.showLoginForm);
-              }).catch(function (error) {
-                    console.log(error);
-              });
-              let name = that.userLogin.userName
-              console.log(name);
               this.$message({
                 message: '恭喜你，登陆成功',
                 type: 'success'
                 });
+              }).catch(function (error) {
+                    console.log(error);
+              });
           } else {
             console.log('error submit!!');
             return false;

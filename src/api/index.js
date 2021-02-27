@@ -7,6 +7,12 @@ const BASE_PATH = 'http://localhost:9085'
 // 用户登录
 export const login = params => { return Axios.post(`${BASE_PATH}/user/loginByPhone`, params)};
 
+// 用户注册
+export const register = params => { return Axios.post(`${BASE_PATH}/user/register`, params)};
+
+// 用户注册
+export const sendVerifyCode = params => { return Axios.get(`${BASE_PATH}/user/sendVerifyCode`, params)};
+
 // // 获取用户列表
 // export const getUserList = params => { return Axios.get(`${BASE_PATH}/user/list`, { params: params }).then(res => res.data); };
 

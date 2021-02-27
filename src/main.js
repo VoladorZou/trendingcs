@@ -11,7 +11,7 @@ Vue.use(AxiosPlugin)
 Vue.use(Vuex)
 
 new Vue({
-  router: router,
-  store: store,
+  router,
+  store,
   render: h => h(App)
 }).$mount('#app')

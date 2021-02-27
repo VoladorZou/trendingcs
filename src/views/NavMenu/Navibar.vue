@@ -28,7 +28,7 @@
           <el-menu-item><Search class="searchInput"/></el-menu-item>
         </div>
         <div class="right">
-         <el-menu-item>
+         <el-menu-item v-if="!this.$store.getters.getLoginState" :key="1">
            <!--仔细阅读Dialog的各个属性参数，会影响到布局排版，例如遇到了一个大坑就是没有设置:append-to-body='true'，导致遮罩遮盖整个页面，:lock-scroll="false"没有设置的话，点击前后会感觉到头部导航栏的移动，体验性很不好！！还有设置dialog的宽度width="40%"前面不用加冒号：-->
            <el-dialog title="Welcome" :visible.sync="showLoginForm" center :append-to-body='true' :lock-scroll="false" width="20%">
             <!--这里可以写各种登录表单-->
@@ -36,8 +36,25 @@
             </el-dialog>
             <el-button type="text" @click="showLoginForm = true">登录</el-button>
             <span class="sep">|</span>
-            <el-button type="text" @click="register = true">注册</el-button>
+            <el-button type="text" @click="register">注册</el-button>
           </el-menu-item>
+          <el-menu-item v-else :key="2">
+            <el-submenu>
+              <template slot="title">欢迎 {{this.$store.getters.getUser.username}}</template>
+              <el-menu-item index="2-1">个人中心</el-menu-item>
+              <el-menu-item index="2-2">用户投稿</el-menu-item>
+              <el-menu-item index="2-3" @click="logout">注销登录</el-menu-item>
+            </el-submenu>
+              <!-- <el-button type="text">{{this.$store.getters.getUser.userName}}</el-button> -->
+              <!-- <el-popover placement="top" width="180" v-model="visible">
+                <p>确定退出登录吗？</p>
+                <div style="text-align: right; margin: 10px 0 0">
+                  <el-button size="mini" type="text" @click="visible = false">取消</el-button>
+                  <el-button type="primary" size="mini" @click="logout">确定</el-button>
+                </div>
+                <el-button type="text" slot="reference">{{this.$store.getters.getUser.userName}}</el-button>
+              </el-popover> -->
+            </el-menu-item>
         </div>
       </el-menu>
     </div>
@@ -104,6 +121,8 @@
 <script>
 import Search from '../../components/Search'
 import Login from '../../components/Login'
+import { mapActions } from "vuex";
+import { mapGetters } from "vuex";
 
   export default {
     name: "Navibar",
@@ -118,12 +137,26 @@ import Login from '../../components/Login'
       Search,
       Login
     },
+    computed: {
+    ...mapGetters(["getUser"])
+    },
     methods: {
+      ...mapActions(["setUser", "setLoginState"]),
       handleSelect(key, keyPath) {
         console.log(key, keyPath);
       },
       login() {
         this.showLoginForm = true;
+      },
+      register(){
+        this.$router.replace('/register')
+      },
+      logout(){
+        this.setLoginState(false);
+        this.$message({
+                message: '注销成功',
+                type: 'success'
+                });
       }
     }
   }

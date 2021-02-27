@@ -9,17 +9,18 @@
       </p>
       <el-button>el-button</el-button>
     </div> -->
-    <Home/>
+    <!-- <Home/> -->
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import Home from './views/Home.vue'
+// import Home from './views/Home.vue'
 
 export default {
   name: 'app',
   components: {
-    Home
+    // Home
   }
 }
 </script>

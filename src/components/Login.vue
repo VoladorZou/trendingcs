@@ -4,13 +4,15 @@
             <el-form-item prop="phone">
               <el-input type="text" v-model="userLogin.phone" autocomplete="off" placeholder="手机号"></el-input>
             </el-form-item>
-            <el-form-item prop="password">
+            <el-form-item prop="password" class="password">
               <el-input type="password" v-model="userLogin.password" autocomplete="off" placeholder="密码"></el-input>
             </el-form-item>
-            <!-- 需要写一个忘记密码的功能在这里 -->
+            <el-form-item class="forgetpassword">
+            <a class="resetpassword" href="/resetpassword">忘记密码？</a>
+            </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="submitForm('userLogin')">登录</el-button>
-              <el-button @click="resetForm('userLogin')">重置</el-button>
+              <el-button @click="resetForm('userLogin')" class="resetLoginInfo">重置</el-button>
             </el-form-item>
         </el-form>
     </div>
@@ -19,6 +21,7 @@
 <script>
   import {login} from '../api'
   import { mapActions } from "vuex";
+  import { mapGetters } from "vuex";
   
   export default {
     data() {
@@ -48,6 +51,9 @@
           phone: '',
           password: ''
         },
+        userdata:[{
+
+        }],
         rules2: {
           phone: [
             { validator: checkPhone, trigger: 'blur' }
@@ -58,6 +64,9 @@
         }
       };
     },
+    computed: {
+    ...mapGetters(["getUser"])
+  },
     methods: {
       ...mapActions(["setUser", "setLoginState"]),
       submitForm(formName) {
@@ -74,18 +83,17 @@
               "userpassword": this.userLogin.password
             };
             login(user).then(res => {
-              // console.log(res.data);
-              // that.userLogin = res.data;
-              // 登录信息存到本地
-                let user = JSON.stringify(res.data.data);
-                // console.log(user);
-                localStorage.setItem("user", user);
+              // 登录信息存到本地;
+                this.userdata = res.data.data;
+                localStorage.setItem("username", this.userdata.username);
+                localStorage.setItem("userid", this.userdata.userid);
+                localStorage.setItem("isLogin", true);
                 // 登录信息存到vuex
                 this.setUser(res.data.data);
                 this.setLoginState(true);
               this.$emit('input',this.showLoginForm);
               this.$message({
-                message: '恭喜你，登陆成功',
+                message: '恭喜您，登陆成功',
                 type: 'success'
                 });
               }).catch(function (error) {
@@ -104,9 +112,18 @@
   }
 </script>
 
-<style>
-.login-input /deep/ .el-input__inner{
+<style scoped>
+.login-input >>> .el-input__inner{
   width: 260px;
-  height: 30px;
+  height: 34px;
+}
+.forgetpassword {
+  margin-bottom: 0px !important; 
+}
+.password{
+  margin-bottom: 2px !important; 
+}
+.resetLoginInfo{
+  margin-left: 50px !important;
 }
 </style>

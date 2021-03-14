@@ -11,7 +11,7 @@
               active-text-color="#ffd04b"
       >
         <div class="left">
-          <el-menu-item>
+          <el-menu-item class="logo" :to="{ path: '/' }">
             <i class="cs">cs</i>
             <b class="trending">Trending</b>
             </el-menu-item>
@@ -24,8 +24,8 @@
           <el-menu-item index="5">技术应用</el-menu-item>
           <el-menu-item index="6">行业展望</el-menu-item>
         </div>
-        <div class="search">
-          <el-menu-item><Search class="searchInput"/></el-menu-item>
+        <div>
+          <el-menu-item><Search/></el-menu-item>
         </div>
         <div class="right">
          <el-menu-item v-if="!this.$store.getters.getLoginState" :key="1">
@@ -38,22 +38,22 @@
             <span class="sep">|</span>
             <el-button type="text" @click="register">注册</el-button>
           </el-menu-item>
-          <el-menu-item v-else :key="2">
+          <el-menu-item v-else-if="this.$store.getters.getUser.userid=='1'" :key="2">
             <el-submenu>
-              <template slot="title">欢迎 {{this.$store.getters.getUser.username}}</template>
-              <el-menu-item index="2-1">个人中心</el-menu-item>
-              <el-menu-item index="2-2">用户投稿</el-menu-item>
-              <el-menu-item index="2-3" @click="logout">注销登录</el-menu-item>
+              <template slot="title">欢迎您, {{this.$store.getters.getUser.username}}</template>
+              <el-menu-item @click="management">管理控制台</el-menu-item>
+              <el-menu-item @click="persionalFile">个人中心</el-menu-item>
+              <el-menu-item @click="Contribute">用户投稿</el-menu-item>
+              <el-menu-item @click="logout">注销登录</el-menu-item>
             </el-submenu>
-              <!-- <el-button type="text">{{this.$store.getters.getUser.userName}}</el-button> -->
-              <!-- <el-popover placement="top" width="180" v-model="visible">
-                <p>确定退出登录吗？</p>
-                <div style="text-align: right; margin: 10px 0 0">
-                  <el-button size="mini" type="text" @click="visible = false">取消</el-button>
-                  <el-button type="primary" size="mini" @click="logout">确定</el-button>
-                </div>
-                <el-button type="text" slot="reference">{{this.$store.getters.getUser.userName}}</el-button>
-              </el-popover> -->
+            </el-menu-item>
+          <el-menu-item v-else :key="3">
+            <el-submenu>
+              <template slot="title">欢迎您, {{this.$store.getters.getUser.username}}</template>
+              <el-menu-item @click="persionalFile">个人中心</el-menu-item>
+              <el-menu-item @click="Contribute">用户投稿</el-menu-item>
+              <el-menu-item @click="logout">注销登录</el-menu-item>
+            </el-submenu>
             </el-menu-item>
         </div>
       </el-menu>
@@ -76,24 +76,7 @@
     position: fixed;
     top: 0px;
     width: 100%;
-  /*!*display: flex;你去了解一下盒子模型*!*/
-  /*display: flex;*/
-  /*!*justify-content: center; 是让他水平剧中，使用它的前提是使用了 display: flex;*!*/
-  /*justify-content: center;*/
-
-/*  居中的方法有很多
-    再举一例：有已经固定长度的就用下面代码也能剧中
-    想要水平剧中
-    position: absolute;
-    width:100px;
-    magin-left;-50px;
-    left:50%;
-    想要垂直居中的
-    position: absolute;
-    height:100px;
-    magin-top;-50px;
-    top:50%;
-*/
+    left: 0px;
 }
   .el-menu-demo{
     display: flex;
@@ -123,6 +106,8 @@ import Search from '../../components/Search'
 import Login from '../../components/Login'
 import { mapActions } from "vuex";
 import { mapGetters } from "vuex";
+import { logout } from '../../api'
+
 
   export default {
     name: "Navibar",
@@ -130,8 +115,17 @@ import { mapGetters } from "vuex";
       return {
         activeIndex: '1',
         activeIndex2: '1',
+        isLogin: false,
+        username: '',
         showLoginForm: false
       };
+    },
+    created() {
+      // this.$store.getters.getUser.username
+      if (localStorage.getItem("isLogin")!== null){
+        this.isLogin = localStorage.getItem("isLogin")
+        this.username = localStorage.getItem("username")
+      }
     },
     components: {
       Search,
@@ -151,12 +145,25 @@ import { mapGetters } from "vuex";
       register(){
         this.$router.replace('/register')
       },
+      persionalFile(){
+        this.$router.replace('/persionalFile')
+      },
+      Contribute(){
+        this.$router.replace('/contribute')
+      },
+      management(){
+        this.$router.replace('/management')
+      },
       logout(){
+        logout(this.showLoginForm).then(res => {
+        console.log(res.data);
         this.setLoginState(false);
         this.$message({
                 message: '注销成功',
                 type: 'success'
                 });
+        })
+        
       }
     }
   }

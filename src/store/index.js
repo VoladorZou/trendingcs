@@ -6,14 +6,11 @@ import user from './modules/user'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  state: {
-    loginState: false,
-    loginInfo: null
+  state:{
+    
   },
   mutations: {
-    setLoginState(state){
-      state.loginState = true;
-    }
+    
   },
   actions: {
   },

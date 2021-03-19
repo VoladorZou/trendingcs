@@ -111,7 +111,8 @@ export default {
               "userpassword": this.userResetPass.password
             };
             resetPassword(user, this.userResetPass.verifyCode).then(res => {
-              console.log(res.data);
+              if(res.data.code !==1) return this.$message.error(res.data.msg)
+              // console.log(res.data);
               this.$message({
                 message: '重置密码成功！',
                 type: 'success'

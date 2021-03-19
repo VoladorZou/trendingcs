@@ -9,6 +9,11 @@ import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
 // 导入全局样式表
 import './assets/css/global.css'
+import moment from 'moment'
+
+Vue.filter('dateFormat', function (dateStr,pattern = "YYYY-MM-DD HH:mm") {
+  return moment(dateStr).format(pattern);
+})
 
 Vue.config.productionTip = false
 Vue.use(AxiosPlugin)

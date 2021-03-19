@@ -28,7 +28,7 @@
           <el-menu-item><Search/></el-menu-item>
         </div>
         <div class="right">
-         <el-menu-item v-if="!this.$store.getters.getLoginState" :key="1">
+         <el-menu-item v-if="!this.$store.getters.getUser" :key="1">
            <!--仔细阅读Dialog的各个属性参数，会影响到布局排版，例如遇到了一个大坑就是没有设置:append-to-body='true'，导致遮罩遮盖整个页面，:lock-scroll="false"没有设置的话，点击前后会感觉到头部导航栏的移动，体验性很不好！！还有设置dialog的宽度width="40%"前面不用加冒号：-->
            <el-dialog title="Welcome" :visible.sync="showLoginForm" center :append-to-body='true' :lock-scroll="false" width="20%">
             <!--这里可以写各种登录表单-->
@@ -121,11 +121,16 @@ import { logout } from '../../api'
       };
     },
     created() {
-      // this.$store.getters.getUser.username
-      if (localStorage.getItem("isLogin")!== null){
-        this.isLogin = localStorage.getItem("isLogin")
-        this.username = localStorage.getItem("username")
-      }
+    //   // 获取浏览器localStorage，判断用户是否已经登录
+    // if (localStorage.getItem("user")) {
+    //   // 如果已经登录，设置vuex登录状态
+    //   this.setUser(JSON.parse(localStorage.getItem("user")));
+    // }
+    // 获取浏览器localStorage，判断用户是否已经登录
+    if (sessionStorage.getItem("user")) {
+      // 如果已经登录，设置vuex登录状态
+      this.setUser(JSON.parse(sessionStorage.getItem("user")));
+    }
     },
     components: {
       Search,
@@ -155,9 +160,13 @@ import { logout } from '../../api'
         this.$router.replace('/management')
       },
       logout(){
-        logout(this.showLoginForm).then(res => {
+        logout().then(res => {
         console.log(res.data);
         this.setLoginState(false);
+        // 清空本地登录信息
+        sessionStorage.setItem("user", "");
+        // 清空vuex登录信息
+        this.setUser("");
         this.$message({
                 message: '注销成功',
                 type: 'success'

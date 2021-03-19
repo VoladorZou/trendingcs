@@ -140,7 +140,8 @@
               "email": this.userRegister.email
             };
             register(user, this.userRegister.verifyCode).then(res => {
-              console.log(res.data);
+              if(res.data.code !==1) return this.$message.error(res.data.msg)
+              // console.log(res.data);
               that.userRegister = res.data;
               // 登录信息存到本地
                 let user = JSON.stringify(res.data.data);

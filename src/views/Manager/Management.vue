@@ -8,26 +8,30 @@
     <el-button type="info" @click="gotoHomePage" class="exitbutton">退出</el-button>
   </el-header>
   <el-container>
-    <el-aside width="200px"  class="manager-aside">
+    <el-aside width="210px"  class="manager-aside">
       <el-menu
       :router="true"
       default-active="/UserList"
       background-color="#333744"
       text-color="#fff"
       active-text-color="#ffd04b">
-      <el-submenu index="/userManage">
+      <!-- <el-submenu index="/userManage">
         <template slot="title">
           <i class="el-icon-location"></i>
           <span>用户管理</span>
         </template>
           <el-menu-item index="/UserList">用户列表</el-menu-item>
           <el-menu-item index="1-2">用户权限</el-menu-item>
-      </el-submenu>
-      <el-menu-item index="/articleManage">
-        <i class="el-icon-menu"></i>
+      </el-submenu> -->
+      <el-menu-item index="/UserList">
+        <i class="el-icon-location"></i>
+        <span slot="title">用户管理</span>
+      </el-menu-item>
+      <el-menu-item index="/ArticleManage">
+        <i class="el-icon-document"></i>
         <span slot="title">文章管理</span>
       </el-menu-item>
-      <el-menu-item index="/goodsManage">
+      <el-menu-item index="/GoodsManage">
         <i class="el-icon-menu"></i>
         <span slot="title">商品管理</span>
       </el-menu-item>

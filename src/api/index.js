@@ -31,9 +31,24 @@ export const saveArticle = params => {
 };
 
 // 根据用户ID获取文章相关信息
-export const getArticleByUserId = params => { 
-    return Axios.get(`${BASE_PATH}/article/getArticleByUserId?userid=`+params)
+export const getArticleByUserId = (userid,pagenum,pagesize) => { 
+    return Axios.get(`${BASE_PATH}/article/getArticleByUserId?userid=`+userid+"&pagesize="+pagesize+"&pagenum="+pagenum)
+};
+
+// 根据文章ID获取文章相关信息
+export const getArticleByArticleId = (params) => { 
+    return Axios.get(`${BASE_PATH}/article/getArticleByArticleId?articleid=`+params)
 };
 
 // 获取用户列表
 export const getUserList = params => { return Axios.get(`${BASE_PATH}/user/getUserList`, params)};
+
+// 分页获取用户列表
+export const getUserListByPage = (pagenum,pagesize,query) => { 
+    return Axios.get(`${BASE_PATH}/user/getUserListByPage?pagenum=`+pagenum+"&pagesize="+pagesize+"&query="+query)
+};
+
+// 分页获取文章列表
+export const getArticleListByPage = (pagenum,pagesize,query) => { 
+    return Axios.get(`${BASE_PATH}/article/getArticleListByPage?pagenum=`+pagenum+"&pagesize="+pagesize+"&query="+query)
+};

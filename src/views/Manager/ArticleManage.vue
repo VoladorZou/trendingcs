@@ -16,18 +16,17 @@
           <el-button type="primary" class="adduserbutton"> 添加用户</el-button>
       </el-col>
   </el-row>
-  <el-table :data="userlist" border="" class="userlisttable" stripe=""> 
+  <el-table :data="articlelist" border="" class="userlisttable" stripe=""> 
       <el-table-column type="index"></el-table-column>
-      <el-table-column label="ID" prop="userid" width="130px"></el-table-column>
-      <el-table-column label="姓名" prop="username" width="150px"></el-table-column>
-      <el-table-column label="性别" prop="usergender" width="150px"></el-table-column>
-      <el-table-column label="手机" prop="phonenum"></el-table-column>
-      <el-table-column label="邮箱" prop="email"></el-table-column>
-      <el-table-column label="头像" prop="userimage"></el-table-column>
-      <el-table-column label="状态" prop="stage">
-          <el-tooltip effect="dark" content="正常或封禁" placement="top" :enterable='false'>
+      <el-table-column label="ID" prop="articleid"></el-table-column>
+      <el-table-column label="姓名" prop="userid"></el-table-column>
+      <el-table-column label="性别" prop="articletitle"></el-table-column>
+      <el-table-column label="手机" prop="articlecover"></el-table-column>
+      <el-table-column label="邮箱" prop="markdown"></el-table-column>
+      <el-table-column label="审核状态">
+          <el-tooltip effect="dark" content="通过或未通过" placement="top" :enterable='false'>
               <el-switch
-  v-model="value2"
+  v-model="ispermited"
   active-color="#13ce66"
   inactive-color="#ff4949">
 </el-switch>
@@ -35,6 +34,7 @@
       </el-table-column>
       <el-table-column label="操作">
           <el-button type="primary" icon="el-icon-edit" size="small"></el-button>
+          
           <el-tooltip effect="dark" content="分配权限" placement="top" :enterable='false'>
               <el-button type="warning" icon="el-icon-setting" size="small"></el-button>
               </el-tooltip>
@@ -43,24 +43,19 @@
   </el-table>
   <!-- 分页 -->
   <el-pagination
-  class="pagination-userlist"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page="queryInfo.pagenum"
       :page-sizes="[1, 2, 5, 10]"
       :page-size="queryInfo.pagesize"
       layout="total, sizes, prev, pager, next, jumper"
-      :total="total"
-      >
+      :total="total">
     </el-pagination>
         </el-card>
 </div>
 </template>
 
 <style scoped>
-.pagination-userlist{
-    mask-type: 20px !important;
-}
 .adduserbutton >>> el-button__inner{
     /* size: 50px !important; */
     padding: 10px, 15px;
@@ -75,13 +70,12 @@
 </style>
 
 <script>
-import {getUserListByPage} from '../../api'
+import {getArticleListByPage} from '../../api'
 
 export default {
     data(){
         return{
-            userlist: [],
-            value2: true,
+            articlelist: [],
             total: 0,
             queryInfo: {
                 query: '',
@@ -96,22 +90,22 @@ export default {
     methods: {
         // 展示当前位于第几页
         handleCurrentChange(newPage){
-            // console.log(newPage);
+            console.log(newPage);
             this.queryInfo.pagenum = newPage;
             this.getUserListed();
         },
         // 每页展示多少条数据
         handleSizeChange(newSize){
-            // console.log(newSize);
+            console.log(newSize);
             this.queryInfo.pagesize = newSize;
             this.getUserListed()
         },
         getUserListed(){
-            getUserListByPage(this.queryInfo.pagenum, this.queryInfo.pagesize, this.queryInfo.query).then(res => {
+            getArticleListByPage(this.queryInfo.pagenum, this.queryInfo.pagesize, this.queryInfo.query).then(res => {
                 if(res.data.code !==1) return this.$message.error(res.data.msg)
                 // console.log(res.data.data);
                 // console.log(res.data.data.total);
-                this.userlist = res.data.data.list;
+                this.articlelist = res.data.data.list;
                 this.total = res.data.data.total;
             }).catch(function (error) {
                     console.log(error);

@@ -12,7 +12,11 @@ import Contribute from "../views/Contribute"
 import ResetPassword from "../components/ResetPassword"
 import Management from "../views/Manager/Management"
 import UserList from "../views/Manager/UserList"
+import ArticleManage from "../views/Manager/ArticleManage"
+import GoodsManage from "../views/Manager/GoodsManage"
 import ArticleDetail from "../views/Article/ArticleDetail"
+import Markdown from "../components/Markdown.vue"
+
 
 
 Vue.use(VueRouter)
@@ -22,6 +26,11 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/markdown',
+    name: 'Markdown',
+    component: Markdown
   },
   {
     path: '/articleDetail',
@@ -39,15 +48,29 @@ const routes = [
   },
   {
     path: '/management',
+    name: 'Management',
     component: Management,
+    redirect: '/UserList',
     children: [{
       path: '/UserList',
+      name: 'UserList',
       component: UserList
+    },
+    {
+      path: '/ArticleManage',
+      name: 'ArticleManage',
+      component: ArticleManage
+    },
+    {
+      path: '/GoodsManage',
+      name: 'GoodsManage',
+      component: GoodsManage
     }
   ]
   },
   {
     path: '/resetpassword',
+    name: 'ResetPassword',
     component: ResetPassword
   },
   {

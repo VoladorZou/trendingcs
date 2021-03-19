@@ -83,11 +83,11 @@
               "userpassword": this.userLogin.password
             };
             login(user).then(res => {
-              // 登录信息存到本地;
-                this.userdata = res.data.data;
-                localStorage.setItem("username", this.userdata.username);
-                localStorage.setItem("userid", this.userdata.userid);
-                localStorage.setItem("isLogin", true);
+              if(res.data.code !==1) return this.$message.error(res.data.msg)
+                // 登录信息存到本地;
+                let user = JSON.stringify(res.data.data);
+                sessionStorage.setItem("user", user);
+                // localStorage.setItem("user", user);
                 // 登录信息存到vuex
                 this.setUser(res.data.data);
                 this.setLoginState(true);

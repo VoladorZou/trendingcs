@@ -1,6 +1,9 @@
 <template>
 <div>
   <div class="info">
+    <div class="itembodychange">
+      <p>修改</p>
+    </div>
     <div class="itembody">
       <div class="itemphoto">头像</div>
   <el-upload
@@ -35,6 +38,11 @@
 </template>
 
 <style>
+.itembodychange{
+  float: right;
+  padding-bottom: 20px;
+  padding-top: 30px;
+}
 .itemphoto{
   float: left;
           /* 上右下左 */
@@ -100,10 +108,12 @@ import {getUserInfo} from '../../api'
       getInfo(){
         // API: getUserInfo :show-header="false"
         getUserInfo().then(res => {
-              console.log(res.data);
+          if(res.data.code !==1) return this.$message.error(res.data.msg)
+              // console.log(res.data);
               this.user = res.data.data;
               this.imageUrl = this.user.userimage;
-              console.log(this.user.username);
+              // console.log(this.user.username);
+              // if(res.data.code !==1) return this.$message.error(res.data.msg)
       });
       },
       handleAvatarSuccess(res, file) {

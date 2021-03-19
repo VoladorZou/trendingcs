@@ -8,8 +8,8 @@
     <el-card>
   <el-row :gutter="15">
       <el-col :span="8">
-          <el-input placeholder="请输入内容" v-model="queryInfo.query"  clearable @clear="getUserListed">
-    <el-button slot="append" icon="el-icon-search" @click="getUserListed"></el-button>
+          <el-input placeholder="请输入内容" >
+    <el-button slot="append" icon="el-icon-search"></el-button>
   </el-input>
       </el-col>
       <el-col :span="4">
@@ -18,23 +18,15 @@
   </el-row>
   <el-table :data="userlist" border="" class="userlisttable" stripe=""> 
       <el-table-column type="index"></el-table-column>
-      <el-table-column label="ID" prop="userid" width="130px"></el-table-column>
-      <el-table-column label="姓名" prop="username" width="150px"></el-table-column>
-      <el-table-column label="性别" prop="usergender" width="150px"></el-table-column>
+      <el-table-column label="ID" prop="userid"></el-table-column>
+      <el-table-column label="姓名" prop="username"></el-table-column>
+      <el-table-column label="性别" prop="usergender"></el-table-column>
       <el-table-column label="手机" prop="phonenum"></el-table-column>
       <el-table-column label="邮箱" prop="email"></el-table-column>
       <el-table-column label="头像" prop="userimage"></el-table-column>
-      <el-table-column label="状态" prop="stage">
-          <el-tooltip effect="dark" content="正常或封禁" placement="top" :enterable='false'>
-              <el-switch
-  v-model="value2"
-  active-color="#13ce66"
-  inactive-color="#ff4949">
-</el-switch>
-              </el-tooltip>
-      </el-table-column>
       <el-table-column label="操作">
           <el-button type="primary" icon="el-icon-edit" size="small"></el-button>
+          
           <el-tooltip effect="dark" content="分配权限" placement="top" :enterable='false'>
               <el-button type="warning" icon="el-icon-setting" size="small"></el-button>
               </el-tooltip>
@@ -43,24 +35,19 @@
   </el-table>
   <!-- 分页 -->
   <el-pagination
-  class="pagination-userlist"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
-      :current-page="queryInfo.pagenum"
-      :page-sizes="[1, 2, 5, 10]"
-      :page-size="queryInfo.pagesize"
+      :current-page="currentPage4"
+      :page-sizes="[10, 20, 30, 40]"
+      :page-size="100"
       layout="total, sizes, prev, pager, next, jumper"
-      :total="total"
-      >
+      :total="400">
     </el-pagination>
         </el-card>
 </div>
 </template>
 
 <style scoped>
-.pagination-userlist{
-    mask-type: 20px !important;
-}
 .adduserbutton >>> el-button__inner{
     /* size: 50px !important; */
     padding: 10px, 15px;
@@ -75,19 +62,13 @@
 </style>
 
 <script>
-import {getUserListByPage} from '../../api'
+import {getUserList} from '../../api'
 
 export default {
     data(){
         return{
             userlist: [],
-            value2: true,
-            total: 0,
-            queryInfo: {
-                query: '',
-                pagenum: 1,
-                pagesize: 10
-            }
+            total: 0
         }
     },
     created(){
@@ -96,23 +77,17 @@ export default {
     methods: {
         // 展示当前位于第几页
         handleCurrentChange(newPage){
-            // console.log(newPage);
-            this.queryInfo.pagenum = newPage;
-            this.getUserListed();
+            console.log(newPage);
         },
         // 每页展示多少条数据
         handleSizeChange(newSize){
-            // console.log(newSize);
-            this.queryInfo.pagesize = newSize;
-            this.getUserListed()
+            console.log(newSize);
         },
         getUserListed(){
-            getUserListByPage(this.queryInfo.pagenum, this.queryInfo.pagesize, this.queryInfo.query).then(res => {
-                if(res.data.code !==1) return this.$message.error(res.data.msg)
-                // console.log(res.data.data);
-                // console.log(res.data.data.total);
-                this.userlist = res.data.data.list;
-                this.total = res.data.data.total;
+            getUserList().then(res => {
+                // console.log(res.data);
+                this.userlist = res.data.data;
+                this.total = res.data.total;
             }).catch(function (error) {
                     console.log(error);
               });

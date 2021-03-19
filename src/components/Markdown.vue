@@ -5,7 +5,7 @@
         <el-input
         class="article-title"
          placeholder="请输入标题"
-         v-model="content.articletitle"
+         v-model="article.articletitle"
          type="text" 
          clearable>
         </el-input>
@@ -17,15 +17,15 @@
   :on-remove="handleRemove"
   :before-remove="beforeRemove"
   :on-exceed="handleExceed"
-  :file-list="content.articleCover">
+  :file-list="article.articleCover">
   <el-button size="small" type="primary">上传封面</el-button>
 </el-upload>
         </div>
         <div class="markdown-editor">
         <mavon-editor 
         ref="md"
-        @save="saveArticle"
-        v-model="content.markdown"/>
+        @save="saveArticled()"
+        v-model="article.markdown"/>
         </div>
     </div>
 </template>
@@ -60,14 +60,20 @@
 </style>
 
 <script>
- import {saveArticle} from '../api'
+ import {saveArticle,getArticleByArticleId} from '../api'
 
 export default {
     data() {
         return {
+            article:{
+                
+            },
+            user:{
+
+            },
             content:{
               tag: 'news',
-              userid: 1,
+              userid: 2,
               articletitle: '',
               articleCover: '',
               markdown: ''
@@ -77,12 +83,28 @@ export default {
             // uploadURL: 'http://localhost:9085/'
         };
     },
+    created() {
+        this.getArticleByArticleIdEd()
+    },
     methods: {
-        
-        saveArticle(){
+        getArticleByArticleIdEd(){
+            if(typeof this.$route.query.id !== 'undefined'){
+                this.article.articleid = this.$route.query.id
+                getArticleByArticleId(this.article.articleid).then(res => {
+                if(res.data.code !==1) return this.$message.error(res.data.msg)
+                this.article = res.data.data
+            })
+            }    
+        },
+        saveArticled(){
             // console.log(localStorage.getItem("userid"));
             // this.content.userid = localStorage.getItem("userid");
-            saveArticle(this.content).then(res => {
+            if (sessionStorage.getItem("user")) {
+                this.user = JSON.parse(sessionStorage.getItem("user"))
+                this.article.userid = this.user.userid
+                console.log(this.article.articleid);
+                }
+            saveArticle(this.article).then(res => {
                 console.log(res.data);
                 this.$message({
                 message: '保存成功，待审核',

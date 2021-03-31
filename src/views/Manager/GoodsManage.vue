@@ -2,7 +2,7 @@
 <div>
 <el-breadcrumb separator-class="el-icon-arrow-right" class="breadnaviUser">
   <el-breadcrumb-item :to="{ path: '/management' }">首页</el-breadcrumb-item>
-  <el-breadcrumb-item>用户列表</el-breadcrumb-item>
+  <el-breadcrumb-item>商品管理</el-breadcrumb-item>
   </el-breadcrumb>
 
     <el-card>
@@ -13,7 +13,7 @@
   </el-input>
       </el-col>
       <el-col :span="4">
-          <el-button type="primary" class="adduserbutton"> 添加用户</el-button>
+          <el-button type="primary"> 添加商品</el-button>
       </el-col>
   </el-row>
   <el-table :data="userlist" border="" class="userlisttable" stripe=""> 
@@ -48,10 +48,7 @@
 </template>
 
 <style scoped>
-.adduserbutton >>> el-button__inner{
-    /* size: 50px !important; */
-    padding: 10px, 15px;
-}
+
 .userlisttable{
     margin-top: 15px;
     margin-bottom: 15px;

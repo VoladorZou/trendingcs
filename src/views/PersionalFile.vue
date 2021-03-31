@@ -18,7 +18,7 @@
       <el-menu-item index="/Resume" @click="saveNaviSate()">
         <span slot="title">基本资料</span>
       </el-menu-item>
-      <el-menu-item index="/AccoutInfo">
+      <el-menu-item index="/FollowUsers">
         <span slot="title">我的关注</span>
       </el-menu-item>
       <el-menu-item index="/MyCollection">

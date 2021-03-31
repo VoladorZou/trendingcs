@@ -1,11 +1,11 @@
 <template>
-    <el-container class="home-container">
+    <el-container class="manager-container">
   <el-header class="manager-header">
     <div>
       <img src="../../assets/managerImg.png" alt="websiteLogo" @click="gotoHomePage">
       <span class="header-text">管理控制台</span>
     </div>
-    <el-button type="info" @click="gotoHomePage" class="exitbutton">退出</el-button>
+    <el-button type="info" @click="gotoHomePage" class="exit-button">退出</el-button>
   </el-header>
   <el-container>
     <el-aside width="210px"  class="manager-aside">
@@ -31,6 +31,10 @@
         <i class="el-icon-document"></i>
         <span slot="title">文章管理</span>
       </el-menu-item>
+      <el-menu-item index="/CommentsManage">
+        <i class="el-icon-document"></i>
+        <span slot="title">评论管理</span>
+      </el-menu-item>
       <el-menu-item index="/GoodsManage">
         <i class="el-icon-menu"></i>
         <span slot="title">商品管理</span>
@@ -45,11 +49,11 @@
 </template>
 
 <style>
-.exitbutton{
+.exit-button{
   height: 40px;
   margin-top: 10px !important;
 }
-.home-container{
+.manager-container{
   height: 100%;
 }
 .manager-header{

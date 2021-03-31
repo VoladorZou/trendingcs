@@ -5,7 +5,7 @@ import Register from "../components/Register.vue"
 import Login from "../components/Login.vue"
 import PersionalFile from "../views/PersionalFile.vue"
 import Resume from "../views/UserCenter/Resume.vue"
-import AccoutInfo from "../views/UserCenter/AccoutInfo"
+import FollowUsers from "../views/UserCenter/FollowUsers"
 import MyCollection from "../views/UserCenter/MyCollection"
 import MyWorks from "../views/UserCenter/MyWorks"
 import Contribute from "../views/Contribute"
@@ -13,11 +13,17 @@ import ResetPassword from "../components/ResetPassword"
 import Management from "../views/Manager/Management"
 import UserList from "../views/Manager/UserList"
 import ArticleManage from "../views/Manager/ArticleManage"
+import CommentsManage from "../views/Manager/CommentsManage"
 import GoodsManage from "../views/Manager/GoodsManage"
 import ArticleDetail from "../views/Article/ArticleDetail"
 import Markdown from "../components/Markdown.vue"
-
-
+import News from "../views/PaperList/News"
+import Sci from "../views/PaperList/Sci"
+import HotTech from "../views/PaperList/HotTech"
+import History from "../views/PaperList/History"
+import Future from "../views/PaperList/Future"
+import TechApply from "../views/PaperList/TechApply"
+import Navibar from "../views/NavMenu/Navibar"
 
 Vue.use(VueRouter)
 
@@ -25,7 +31,45 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+    redirect: '/News',
+    children: [
+      {
+        path: '/News',
+        name: 'News',
+        component: News
+      },
+      {
+        path: '/TechApply',
+        name: 'TechApply',
+        component: TechApply
+      },
+      {
+        path: '/Future',
+        name: 'Future',
+        component: Future
+      },
+      {
+        path: '/HotTech',
+        name: 'HotTech',
+        component: HotTech
+      },
+    {
+      path: '/History',
+      name: 'History',
+      component: History
+    },
+    {
+      path: '/Sci',
+      name: 'Sci',
+      component: Sci
+    }
+  ]
+  },
+  {
+    path: '/navibar',
+    name: 'Navibar',
+    component: Navibar
   },
   {
     path: '/markdown',
@@ -62,6 +106,11 @@ const routes = [
       component: ArticleManage
     },
     {
+      path: '/CommentsManage',
+      name: 'CommentsManage',
+      component: CommentsManage
+    },
+    {
       path: '/GoodsManage',
       name: 'GoodsManage',
       component: GoodsManage
@@ -88,8 +137,8 @@ const routes = [
       component: Resume
     },
     {
-      path: '/AccoutInfo',
-      component: AccoutInfo
+      path: '/FollowUsers',
+      component: FollowUsers
     },
     {
       path: '/MyCollection',
@@ -112,7 +161,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: 'hash',
   base: process.env.BASE_URL,
   routes
 })

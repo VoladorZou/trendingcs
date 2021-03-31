@@ -8,7 +8,8 @@
               <el-input type="password" v-model="userLogin.password" autocomplete="off" placeholder="密码"></el-input>
             </el-form-item>
             <el-form-item class="forgetpassword">
-            <a class="resetpassword" href="/resetpassword">忘记密码？</a>
+            <!-- <a class="reset-password" href="/resetpassword">忘记密码？</a> -->
+            <el-button type="text" @click="resetPassword()">忘记密码？</el-button>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="submitForm('userLogin')">登录</el-button>
@@ -48,8 +49,8 @@
       return {
         showLoginForm: false,
         userLogin: {
-          phone: '',
-          password: ''
+          phone: '18420178854',
+          password: 'pd123'
         },
         userdata:[{
 
@@ -107,6 +108,9 @@
       },
       resetForm(formName) {
         this.$refs[formName].resetFields();
+      },
+      resetPassword(){
+        this.$router.replace('/resetpassword')
       }
     }
   }

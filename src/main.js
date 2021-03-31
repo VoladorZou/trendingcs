@@ -11,7 +11,7 @@ import 'mavon-editor/dist/css/index.css'
 import './assets/css/global.css'
 import moment from 'moment'
 
-Vue.filter('dateFormat', function (dateStr,pattern = "YYYY-MM-DD HH:mm") {
+Vue.filter('dateFormat', function (dateStr,pattern = "YYYY-MM-DD") {
   return moment(dateStr).format(pattern);
 })
 

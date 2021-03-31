@@ -8,12 +8,17 @@
     <el-card>
   <el-row :gutter="15">
       <el-col :span="8">
-          <el-input placeholder="请输入内容" v-model="queryInfo.query"  clearable @clear="getUserListed">
+          <el-input placeholder="请输入内容" v-model="queryInfo.query"  clearable @clear="getUserListed"
+          @input="getUserListed">
     <el-button slot="append" icon="el-icon-search" @click="getUserListed"></el-button>
   </el-input>
       </el-col>
+      <el-dialog title="添加用户" :visible.sync="showLoginForm" center :append-to-body='true' :lock-scroll="false" width="25%">
+            <!--这里可以写各种登录表单-->
+            <AddUser v-model="showLoginForm"/>
+            </el-dialog>
       <el-col :span="4">
-          <el-button type="primary" class="adduserbutton"> 添加用户</el-button>
+          <el-button type="primary" class="adduserbutton" @click="showLoginForm = true"> 添加用户</el-button>
       </el-col>
   </el-row>
   <el-table :data="userlist" border="" class="userlisttable" stripe=""> 
@@ -38,7 +43,7 @@
           <el-tooltip effect="dark" content="分配权限" placement="top" :enterable='false'>
               <el-button type="warning" icon="el-icon-setting" size="small"></el-button>
               </el-tooltip>
-              <el-button type="danger" icon="el-icon-delete" size="small"></el-button>
+              <el-button type="danger" icon="el-icon-delete" size="small" @click="deleteuser"></el-button>
       </el-table-column>
   </el-table>
   <!-- 分页 -->
@@ -76,6 +81,7 @@
 
 <script>
 import {getUserListByPage} from '../../api'
+import AddUser from '../../components/AddUser'
 
 export default {
     data(){
@@ -83,6 +89,7 @@ export default {
             userlist: [],
             value2: true,
             total: 0,
+            showLoginForm: false,
             queryInfo: {
                 query: '',
                 pagenum: 1,
@@ -90,10 +97,32 @@ export default {
             }
         }
     },
+    components: {
+      AddUser
+    },
     created(){
         this.getUserListed()
     },
     methods: {
+        // 删除用户
+        deleteuser(){
+            this.$confirm('即将删除此用户, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+            // 调用删除用户接口
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
+        },
         // 展示当前位于第几页
         handleCurrentChange(newPage){
             // console.log(newPage);

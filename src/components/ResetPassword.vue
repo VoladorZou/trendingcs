@@ -85,7 +85,7 @@ export default {
           phone: '',
           password: '',
           checkPass:'',
-          verifyCode: ''
+          verifyCode: 'a123'
         },
         atime:'',
         rules2: {

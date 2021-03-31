@@ -98,7 +98,7 @@
           phone: '',
           password: '',
           checkPass:'',
-          verifyCode: '',
+          verifyCode: 'a123',
           userName: '',
           userGender: '男',
           email: ''

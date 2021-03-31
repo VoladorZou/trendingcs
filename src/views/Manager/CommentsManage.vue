@@ -2,7 +2,7 @@
 <div>
 <el-breadcrumb separator-class="el-icon-arrow-right" class="breadnaviUser">
   <el-breadcrumb-item :to="{ path: '/management' }">首页</el-breadcrumb-item>
-  <el-breadcrumb-item>文章列表</el-breadcrumb-item>
+  <el-breadcrumb-item>评论列表</el-breadcrumb-item>
   </el-breadcrumb>
 
     <el-card>
@@ -20,16 +20,16 @@
           <el-button type="primary" @click="addArticle"> 添加文章</el-button>
       </el-col>
   </el-row>
-  <el-table :data="articlelist" border="" class="userlisttable" stripe=""> 
+  <el-table :data="commentslist" border="" class="userlisttable" stripe=""> 
       <el-table-column type="index"></el-table-column>
-      <el-table-column label="ID" prop="articleid"></el-table-column>
-      <el-table-column label="姓名" prop="userid"></el-table-column>
-      <el-table-column label="性别" prop="articletitle"></el-table-column>
-      <el-table-column label="手机" prop="articlecover"></el-table-column>
-      <el-table-column label="邮箱" prop="markdown"></el-table-column>
+      <el-table-column label="ID" prop="commentid"></el-table-column>
+      <el-table-column label="评论用户" prop="userid"></el-table-column>
+      <el-table-column label="被评论文章" prop="articleid"></el-table-column>
+      <el-table-column label="评论内容" prop="commentcontent"></el-table-column>
+      <el-table-column label="评论日期" prop="commenttime" :formatter="formatDate"></el-table-column>
       <el-table-column label="审核状态">
           <template slot-scope="scope">
-          <el-tooltip effect="dark" content="通过或未通过(待审核)" placement="top" :enterable='false'>
+          <el-tooltip effect="dark" content="允许或封禁" placement="top" :enterable='false'>
             <el-switch
               v-model="scope.row.ispermited"
               @change="permitArticleAPI(scope.row.articleid, scope.row.ispermited)"
@@ -40,7 +40,6 @@
       </el-table-column>
       <el-table-column label="操作">
           <el-button type="primary" icon="el-icon-edit" size="small"></el-button>
-          
           <el-tooltip effect="dark" content="分配权限" placement="top" :enterable='false'>
               <el-button type="warning" icon="el-icon-setting" size="small"></el-button>
               </el-tooltip>
@@ -72,12 +71,12 @@
 </style>
 
 <script>
-import {getArticleListByPage, permitArticle} from '../../api'
+import {getCommentListByPage, permitArticle} from '../../api'
 
 export default {
     data(){
         return{
-            articlelist: [],
+            commentslist: [],
             total: 0,
             queryInfo: {
                 query: '',
@@ -90,18 +89,27 @@ export default {
         this.getArticleListAPI()
     },
     methods: {
+        formatDate(row, column) {
+          // 获取单元格数据
+          let data = row[column.property]
+          if(data == null) {
+              return null
+          }
+          let dt = new Date(data)
+          return dt.getFullYear() + '-' + (dt.getMonth() + 1) + '-' + dt.getDate() + ' ' + dt.getHours() + ':' + dt.getMinutes() 
+        },
         addArticle(){
             this.$router.replace('/markdown')
         },
         // 展示当前位于第几页
         handleCurrentChange(newPage){
-            console.log(newPage);
+            // console.log(newPage);
             this.queryInfo.pagenum = newPage;
             this.getArticleListAPI();
         },
         // 每页展示多少条数据
         handleSizeChange(newSize){
-            console.log(newSize);
+            // console.log(newSize);
             this.queryInfo.pagesize = newSize;
             this.getArticleListAPI()
         },
@@ -113,11 +121,11 @@ export default {
         },
         // 获取文章列表
         getArticleListAPI(){
-            getArticleListByPage(this.queryInfo.pagenum, this.queryInfo.pagesize, this.queryInfo.query).then(res => {
+            getCommentListByPage(this.queryInfo.pagenum, this.queryInfo.pagesize, this.queryInfo.query).then(res => {
                 if(res.data.code !==1) return this.$message.error(res.data.msg)
                 // console.log(res.data.data);
                 // console.log(res.data.data.total);
-                this.articlelist = res.data.data.list;
+                this.commentslist = res.data.data.list;
                 this.total = res.data.data.total;
             }).catch(function (error) {
                     console.log(error);

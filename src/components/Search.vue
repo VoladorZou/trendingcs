@@ -5,6 +5,7 @@
         placeholder="搜索"
         prefix-icon="el-icon-search"
         type="text"
+        clearable
         v-model="input">
         </el-input>
         </div>
@@ -24,6 +25,10 @@ export default {
   data() {
     return {
       input: ''
+      // v-model="queryInfo.query" 
+      //   clearable 
+      //   @clear="getArticleListAPI()"
+      //   @input="getArticleListAPI()"
     }
   }
 }

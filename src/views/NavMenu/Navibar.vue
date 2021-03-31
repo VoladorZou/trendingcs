@@ -2,7 +2,8 @@
   <div>
     <div class="father">
       <el-menu
-              :default-active="activeIndex2"
+      :router="true"
+      default-active="/News"
               class="el-menu-demo"
               mode="horizontal"
               @select="handleSelect"
@@ -10,19 +11,19 @@
               text-color="#fff"
               active-text-color="#ffd04b"
       >
-        <div class="left">
-          <el-menu-item class="logo" :to="{ path: '/' }">
+        <div class="left" @click="gotoHomePage">
+          <el-menu-item class="logo">
             <i class="cs">cs</i>
             <b class="trending">Trending</b>
             </el-menu-item>
         </div>
         <div class="middle">
-          <el-menu-item index="1">News</el-menu-item>
-          <el-menu-item index="2">发展历史</el-menu-item>
-          <el-menu-item index="3">技术热点</el-menu-item>
-          <el-menu-item index="4">科研进展</el-menu-item>
-          <el-menu-item index="5">技术应用</el-menu-item>
-          <el-menu-item index="6">行业展望</el-menu-item>
+          <el-menu-item index="/News">News</el-menu-item>
+          <el-menu-item index="/History">发展历史</el-menu-item>
+          <el-menu-item index="/HotTech">技术热点</el-menu-item>
+          <el-menu-item index="/Sci">科研进展</el-menu-item>
+          <el-menu-item index="/TechApply">技术应用</el-menu-item>
+          <el-menu-item index="/Future">行业展望</el-menu-item>
         </div>
         <div>
           <el-menu-item><Search/></el-menu-item>
@@ -81,6 +82,7 @@
   .el-menu-demo{
     display: flex;
     justify-content: center;
+    perspective: none !important;
   }
   .left{
     display: flex;
@@ -159,6 +161,9 @@ import { logout } from '../../api'
       management(){
         this.$router.replace('/management')
       },
+      gotoHomePage(){
+      this.$router.replace('/')
+    },
       logout(){
         logout().then(res => {
         console.log(res.data);

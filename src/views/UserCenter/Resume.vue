@@ -113,7 +113,6 @@ import {getUserInfo} from '../../api'
               this.user = res.data.data;
               this.imageUrl = this.user.userimage;
               // console.log(this.user.username);
-              // if(res.data.code !==1) return this.$message.error(res.data.msg)
       });
       },
       handleAvatarSuccess(res, file) {

@@ -31,12 +31,12 @@ import MarkdownIt from 'markdown-it'
 
 export default {
     data() {
-        
         return{
+            user:{},
             queryInfo: {
                 query: '',
                 pagenum: 1,
-                pagesize: 10
+                pagesize: 5
             },
         showArticlePage: false,
         active: '',
@@ -47,7 +47,6 @@ export default {
       this.getArticleByUserId();
     },
     computed: {
-        // var content = '';
         markdown(content){
             const md = new MarkdownIt();
             const result = md.render(content);
@@ -73,12 +72,12 @@ export default {
             this.queryInfo.pagesize = newSize;
             this.getArticleByUserId()
         },
-        mouseOver: function(){
-            this.active = 'background-color: #8dc8d3';
-        },
-        mouseLeave: function () {
-            this.active = '';
-        },
+        // mouseOver: function(){
+        //     this.active = 'background-color: #8dc8d3';
+        // },
+        // mouseLeave: function () {
+        //     this.active = '';
+        // },
         showDetail(articleid){
             // this.showArticlePage = true; 
             // 路由传参
@@ -91,9 +90,11 @@ export default {
                     })
         },
         getArticleByUserId(){
-            var userid = 1;
-            getArticleByUserId(userid,this.queryInfo.pagenum,this.queryInfo.pagesize).then(res => {
-                if(res.data.code !==1) return this.$message.error(res.data.msg)
+            if (sessionStorage.getItem("user")) {
+                this.user = JSON.parse(sessionStorage.getItem("user"))
+                }
+            getArticleByUserId(this.user.userid,this.queryInfo.pagenum,this.queryInfo.pagesize).then(res => {
+                if(res.data.code !== 1) return this.$message.error(res.data.msg)
                 // console.log(res.data.data);
                 this.articleList = res.data.data.list;
                 this.total = res.data.data.total;

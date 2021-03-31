@@ -11,20 +11,15 @@
         </el-input>
         </div>
         <div class="upload-cover">
-        <el-upload
-  class="upload-cover"
-  action="uploadURL"
-  :on-remove="handleRemove"
-  :before-remove="beforeRemove"
-  :on-exceed="handleExceed"
-  :file-list="article.articleCover">
-  <el-button size="small" type="primary">上传封面</el-button>
-</el-upload>
+            <el-dialog title="保存文章" :visible.sync="showLoginForm" center :append-to-body='true' :lock-scroll="false" width="30%">
+            <!--这里可以写各种表单-->
+            <saveArticleDialog v-model="showLoginForm"/>
+            </el-dialog>
         </div>
         <div class="markdown-editor">
         <mavon-editor 
         ref="md"
-        @save="saveArticled()"
+        @save="saveArticleDialog()"
         v-model="article.markdown"/>
         </div>
     </div>
@@ -60,17 +55,14 @@
 </style>
 
 <script>
- import {saveArticle,getArticleByArticleId} from '../api'
+ import {saveArticle,getArticleByArticleId,updateArticle} from '../api'
+ import saveArticleDialog from './saveArticleDialog'
 
 export default {
     data() {
         return {
-            article:{
-                
-            },
-            user:{
-
-            },
+            article:{},
+            user:{},
             content:{
               tag: 'news',
               userid: 2,
@@ -78,15 +70,28 @@ export default {
               articleCover: '',
               markdown: ''
             },
-            uploadURL: 'http://localhost:9085/user/uploadProfilePhoto',
             defaultData: "preview",
-            // uploadURL: 'http://localhost:9085/'
+            showLoginForm: false
         };
     },
     created() {
         this.getArticleByArticleIdEd()
     },
+    components: {
+      saveArticleDialog
+    },
     methods: {
+        saveArticleDialog(){
+            if(typeof this.article.articletitle === 'undefined'){
+            this.$message({
+                message: '标题不能为空',
+                type: 'error'
+                });
+            }else{
+                this.showLoginForm = true;
+                this.saveArticled()
+            } 
+        },
         getArticleByArticleIdEd(){
             if(typeof this.$route.query.id !== 'undefined'){
                 this.article.articleid = this.$route.query.id
@@ -97,24 +102,34 @@ export default {
             }    
         },
         saveArticled(){
-            // console.log(localStorage.getItem("userid"));
-            // this.content.userid = localStorage.getItem("userid");
+            
             if (sessionStorage.getItem("user")) {
                 this.user = JSON.parse(sessionStorage.getItem("user"))
                 this.article.userid = this.user.userid
-                console.log(this.article.articleid);
+                // console.log(this.article.articleid);
                 }
+                if(typeof this.article.articleid === 'undefined'){
             saveArticle(this.article).then(res => {
                 console.log(res.data);
-                this.$message({
-                message: '保存成功，待审核',
-                type: 'success'
-                });
-                this.$router.replace('/MyWorks')
+                // this.$message({
+                // message: '保存成功，待审核',
+                // type: 'success'
+                // });
+                // this.$router.replace('/MyWorks')
             }).catch(function (error) {
                     console.log(error);
               });
-              
+                }else{
+                    updateArticle(this.article).then(res =>{
+                console.log(res.data);
+                // this.$message({
+                // message: '修改成功，待审核',
+                // type: 'success'
+                // });
+                // this.$router.replace('/MyWorks')
+                    })
+                }
+            
         }
     }
 };

@@ -123,13 +123,12 @@
             };
             register(user, this.addUser.verifyCode).then(res => {
               if(res.data.code !==1) return this.$message.error(res.data.msg)
-              
               this.$emit('input',this.showLoginForm);
               this.$message({
-                message: '恭喜您，注册成功！',
+                message: '添加成功！',
                 type: 'success'
                 });
-                this.$router.replace('/')
+                // this.$router.replace('/')
               }).catch(function (error) {
                     console.log(error);
               });
@@ -173,6 +172,9 @@
 </script>
 
 <style scoped>
+.resetUser-Button{
+  margin-left: 50px !important;
+}
 .addUser-Button{
   float: left;
 }

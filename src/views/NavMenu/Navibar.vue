@@ -26,7 +26,15 @@
           <el-menu-item index="/Future">行业展望</el-menu-item>
         </div>
         <div>
-          <el-menu-item><Search/></el-menu-item>
+          <el-menu-item>
+            <el-input class="search-input-navi" 
+        placeholder="搜索"
+        prefix-icon="el-icon-search"
+        type="text"
+        clearable
+        v-model="input">
+        </el-input>
+            </el-menu-item>
         </div>
         <div class="right">
          <el-menu-item v-if="!this.$store.getters.getUser" :key="1">
@@ -42,18 +50,34 @@
           <el-menu-item v-else-if="this.$store.getters.getUser.userid=='1'" :key="2">
             <el-submenu>
               <template slot="title">欢迎您, {{this.$store.getters.getUser.username}}</template>
-              <el-menu-item @click="management">管理控制台</el-menu-item>
-              <el-menu-item @click="persionalFile">个人中心</el-menu-item>
-              <el-menu-item @click="Contribute">用户投稿</el-menu-item>
-              <el-menu-item @click="logout">注销登录</el-menu-item>
+              <el-menu-item @click="management">
+                <i class="el-icon-setting"></i>
+                管理控制台
+                </el-menu-item>
+              <el-menu-item @click="persionalFile">
+                <i class="el-icon-user"></i>
+                个人中心
+                </el-menu-item>
+              <el-menu-item @click="Contribute">
+                <i class="el-icon-edit-outline"></i>
+                用户投稿</el-menu-item>
+              <el-menu-item @click="logout">
+                <i class="el-icon-switch-button"></i>
+                注销登录</el-menu-item>
             </el-submenu>
             </el-menu-item>
           <el-menu-item v-else :key="3">
             <el-submenu>
               <template slot="title">欢迎您, {{this.$store.getters.getUser.username}}</template>
-              <el-menu-item @click="persionalFile">个人中心</el-menu-item>
-              <el-menu-item @click="Contribute">用户投稿</el-menu-item>
-              <el-menu-item @click="logout">注销登录</el-menu-item>
+              <el-menu-item @click="persionalFile">
+                <i class="el-icon-user"></i>
+                个人中心</el-menu-item>
+              <el-menu-item @click="Contribute">
+                <i class="el-icon-edit-outline"></i>
+                用户投稿</el-menu-item>
+              <el-menu-item @click="logout">
+                <i class="el-icon-switch-button"></i>
+                注销登录</el-menu-item>
             </el-submenu>
             </el-menu-item>
         </div>
@@ -62,9 +86,15 @@
   </div>
 </template>
 
-<style>
+<style scoped>
+.search-input-navi /deep/ .el-input__inner{
+  width: 260px;
+  height: 30px;
+  border-radius: 30px;
+}
   .cs{
-    color: rgb(27, 155, 194);
+    
+    color: rgb(141, 151, 153);
   }
   .sep{
     color: rgb(245, 245, 245);
@@ -104,7 +134,7 @@
 </style>
 
 <script>
-import Search from '../../components/Search'
+// import Search from '../../components/Search'
 import Login from '../../components/Login'
 import { mapActions } from "vuex";
 import { mapGetters } from "vuex";
@@ -116,6 +146,7 @@ import { logout } from '../../api'
     data() {
       return {
         activeIndex: '1',
+        input: '',
         activeIndex2: '1',
         isLogin: false,
         username: '',
@@ -135,7 +166,6 @@ import { logout } from '../../api'
     }
     },
     components: {
-      Search,
       Login
     },
     computed: {

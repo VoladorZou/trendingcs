@@ -18,7 +18,7 @@
       :current-page="queryInfo.pagenum"
       :page-sizes="[1, 2, 5, 10]"
       :page-size="queryInfo.pagesize"
-      layout="total, sizes, prev, pager, next, jumper"
+      layout="sizes, prev, pager, next, jumper"
       :total="total"
       >
     </el-pagination>
@@ -32,7 +32,7 @@ export default {
     data() {
         
         return{
-            tag: 'news',
+            tag: '1',
             queryInfo: {
                 query: '',
                 pagenum: 1,

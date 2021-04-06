@@ -108,8 +108,8 @@ export const unlike = (userid, articleid) => {
 };
 
 // 查询点赞状态
-export const likeState = (userid, articleid) => { 
-    return Axios.get(`${BASE_PATH}/like/likeState?userid=`+userid+"&articleid="+articleid)
+export const likeState = (articleid) => { 
+    return Axios.get(`${BASE_PATH}/like/likeState?articleid=`+articleid)
 };
 
 // 收藏文章
@@ -137,7 +137,7 @@ export const getComment = (pagenum,pagesize,articleid) => {
     return Axios.get(`${BASE_PATH}/comment/getComment?pagenum=`+pagenum+"&pagesize="+pagesize+"&articleid="+articleid)
 };
 
-// 分页获取文章列表
+// 分页获取评论列表
 export const getCommentListByPage = (pagenum, pagesize, query) => { 
     return Axios.get(`${BASE_PATH}/comment/getCommentListByPage?pagenum=`+pagenum+"&pagesize="+pagesize+"&query="+query)
 };
@@ -145,4 +145,14 @@ export const getCommentListByPage = (pagenum, pagesize, query) => {
 // 编写文章的评论信息
 export const saveComment = params => { 
     return Axios.post(`${BASE_PATH}/comment/saveComment`, params)
+};
+
+// 给网站留言
+export const sendMessage = params => { 
+    return Axios.post(`${BASE_PATH}/message/sendMessage`, params)
+};
+
+// 分页获取留言列表
+export const getMessageListByPage = (pagenum, pagesize, query) => { 
+    return Axios.get(`${BASE_PATH}/message/getMessageListByPage?pagenum=`+pagenum+"&pagesize="+pagesize+"&query="+query)
 };

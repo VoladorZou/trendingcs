@@ -31,7 +31,7 @@ export default {
     data() {
         
         return{
-            tag: 'news',
+            tag: '2',
             queryInfo: {
                 query: '',
                 pagenum: 1,
@@ -56,6 +56,14 @@ export default {
             // console.log(newSize);
             this.queryInfo.pagesize = newSize;
             this.getArticleByTaged()
+        },
+        showDetail(articleid){
+            this.$router.push({
+                path: '/articleDetail',
+                query: {
+                    id: articleid
+                    }
+                    })
         },
         getArticleByTaged(){
             getArticleByTag(this.tag,this.queryInfo.pagenum,this.queryInfo.pagesize).then(res => {

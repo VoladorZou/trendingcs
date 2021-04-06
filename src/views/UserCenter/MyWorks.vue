@@ -5,6 +5,7 @@
             <li v-for="article in articleList" :key="article.articleid" class="article-li">
                 <div @click="showDetail(article.articleid)">
                     <el-card class="article-card">
+                        <img :src="article.articlecover" alt="封面图片" class="cover" v-if="article.articlecover !== null">
                 <p class="article-title">{{article.articletitle}}</p>
                 <p class="time-part">{{article.createtime | dateFormat}}</p>
                     </el-card>
@@ -107,6 +108,11 @@ export default {
 </script>
 
 <style>
+.cover{
+    width: 200px;
+    height: 100px;
+    float: left;
+}
 .time-part{
     width: 160px;
     float: right;

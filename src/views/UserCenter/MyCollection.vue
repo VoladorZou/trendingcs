@@ -77,7 +77,6 @@ export default {
                 this.fellowList = res.data.data.list;
                 this.total = res.data.data.total;
                 this.articleList = []
-
                 for (var i=0, len=this.fellowList.length; i<len; i++){
                     // console.log(this.fellowList[i].uploaderid);
                     // 查询用户信息

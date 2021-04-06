@@ -92,9 +92,7 @@ import {getUserInfo} from '../../api'
   export default {
     data() {
       return {
-        user:[{
-
-        }],
+        user:[{}],
         imageUrl: '',
         uploadURL: 'http://localhost:9085/user/uploadProfilePhoto'
       };
@@ -104,7 +102,6 @@ import {getUserInfo} from '../../api'
       this.getInfo();
     },
     methods: {
-      
       getInfo(){
         // API: getUserInfo :show-header="false"
         getUserInfo().then(res => {
@@ -117,6 +114,10 @@ import {getUserInfo} from '../../api'
       },
       handleAvatarSuccess(res, file) {
         this.imageUrl = URL.createObjectURL(file.raw);
+        this.$message({
+                message: '上传成功',
+                type: 'success'
+                });
       },
       beforeAvatarUpload(file) {
         const isJPG = file.type === 'image/jpeg';

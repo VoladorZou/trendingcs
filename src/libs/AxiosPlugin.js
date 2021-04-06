@@ -33,9 +33,13 @@ Axios.interceptors.request.use(
   config => {
     // 加载
     startLoading()
-    if (localStorage.eleToken) {
-      config.headers.Authorization = localStorage.eleToken
+    if (sessionStorage.getItem("token")) {
+      // console.log(sessionStorage.getItem("token"));
+      config.headers.Authorization = sessionStorage.getItem("token")
     }
+    // if (localStorage.eleToken) {
+    //   config.headers.Authorization = localStorage.eleToken
+    // }
     return config
   },
   error => {

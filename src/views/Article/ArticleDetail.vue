@@ -1,4 +1,5 @@
 <template>
+
     <div>
         <el-card class="articledetail">
         <h3>{{article.articletitle}}</h3>
@@ -7,8 +8,6 @@
         v-if="article.userid==user.userid"
         class="edit-button">编辑</el-button>
         </div>
-        <!-- <span>|</span> -->
-        
         <p class="article-time-part">{{article.createtime | dateFormat}}</p>
         <!-- 正文 -->
         <p v-html="markdown" class="main-content"></p>
@@ -20,9 +19,9 @@
         </el-tooltip>
         <!-- 收藏 -->
         <el-tooltip effect="dark" content="收藏或取消收藏" placement="top" :enterable='false'>
-        <el-button icon="el-icon-star-off" circle v-if="!logining" disabled></el-button>
-        <el-button icon="el-icon-star-off" circle v-else-if="!collectState" @click="collectingAPI()"></el-button>
-        <el-button type="warning" icon="el-icon-star-off" circle v-else @click="uncollectAPI()"></el-button>
+        <el-button icon="el-icon-star-off" circle v-if="!logining" disabled class="collect-button"></el-button>
+        <el-button icon="el-icon-star-off" circle v-else-if="!collectState" @click="collectingAPI()" class="collect-button"></el-button>
+        <el-button type="warning" icon="el-icon-star-off" circle v-else @click="uncollectAPI()" class="collect-button"></el-button>
         </el-tooltip>
         <!-- 评论输入框  -->
         <div class="enter-comment">
@@ -37,8 +36,9 @@
   <div class="publish-part">
       <el-button @click="saveCommentAPI()" class="publish-button" v-if="logining">发表</el-button>
   <el-button @click="saveCommentAPI()" disabled class="publish-button-nologin" v-else>发表</el-button>
+  <!-- <p v-if="!logining">你可以在登录后，发表评论</p> -->
   </div>
-        <!-- 文章评论 -->
+        <!-- 文章评论页 -->
         <ul class="comments-ul">
             <li v-for="comment in comments" :key="comment.commentid" class="article-li">      
                 <p class="comments-content">{{comment.commentcontent}}</p>
@@ -74,6 +74,9 @@
 </template>
 
 <style>
+.collect-button{
+    margin-left: 30px !important;
+}
 .edit-button-part{
     text-align: right;
 }
@@ -112,9 +115,7 @@
     display: inline;
     position: relative;
     left: -445px;
-    /* padding: 12px 0px 12px 0px; */
     border-radius: 6%;
-    /* background-color: #fb7299 !important; */
 }
 .sepArticle{
     color: rgb(27, 26, 26);
@@ -266,7 +267,7 @@ export default {
             }
         },
         likeingAPI(){
-            likeing(this.user.userid,this.article.userid).then(res => {
+            likeing(this.user.userid, this.article.articleid).then(res => {
                 if(res.data.code !==1) return this.$message.error(res.data.msg)
                 this.$notify({
           title: '点赞成功',
@@ -276,7 +277,7 @@ export default {
         })
         },
         unlikeAPI(){
-            unlike(this.user.userid,this.article.userid).then(res => {
+            unlike(this.user.userid, this.article.articleid).then(res => {
                 if(res.data.code !==1) return this.$message.error(res.data.msg)
                 this.$notify({
           title: '取消点赞成功',
@@ -287,10 +288,10 @@ export default {
         },
         likeStateAPI(){
             if(this.logining){
-                likeState(this.user.userid, this.article.userid).then(res => {
+                // console.log('文章ID: '+this.article.articleid);
+                likeState(this.article.articleid).then(res => {
                 if(res.data.code !==1) return this.$message.error(res.data.msg)  
                 this.likeState = res.data.data
-                console.log(this.likeState);
                 })
             }
         },
@@ -304,7 +305,7 @@ export default {
         });
         })
         },
-        // 获取文章发表者的用户信息
+        // 获取评论发表者的用户信息
         getCommentatorInfoByUserIdAPI(id){
             getUserInfoByUserId(id).then(res => {
                 if(res.data.code !==1) return this.$message.error(res.data.msg)  
@@ -317,6 +318,7 @@ export default {
                 if(res.data.code !==1) return this.$message.error(res.data.msg)  
                 this.uploaderInfo = res.data.data
                 this.fellowStateAPI()
+                console.log('点赞状态'+this.likeState);
                 this.likeStateAPI()
                 })
         },
@@ -331,6 +333,7 @@ export default {
                     this.logining = false
                 }
         },
+        // 编辑文章
         editarticle(){
             this.$router.push({
                 path: '/markdown',

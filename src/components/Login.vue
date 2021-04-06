@@ -20,7 +20,7 @@
 </template>
 
 <script>
-  import {login} from '../api'
+  import {login, getUserInfo} from '../api'
   import { mapActions } from "vuex";
   import { mapGetters } from "vuex";
   
@@ -52,9 +52,7 @@
           phone: '18420178854',
           password: 'pd123'
         },
-        userdata:[{
-
-        }],
+        userdata:[{}],
         rules2: {
           phone: [
             { validator: checkPhone, trigger: 'blur' }
@@ -85,12 +83,16 @@
             };
             login(user).then(res => {
               if(res.data.code !==1) return this.$message.error(res.data.msg)
-                // 登录信息存到本地;
+              sessionStorage.setItem("token", res.data.data);
+              getUserInfo().then(res => {
+        if(res.data.code !==1) return this.$message.error(res.data.msg)
+        // 登录信息存到本地;
                 let user = JSON.stringify(res.data.data);
                 sessionStorage.setItem("user", user);
                 // localStorage.setItem("user", user);
                 // 登录信息存到vuex
                 this.setUser(res.data.data);
+        })
                 this.setLoginState(true);
               this.$emit('input',this.showLoginForm);
               this.$message({

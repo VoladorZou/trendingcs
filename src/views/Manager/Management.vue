@@ -28,15 +28,19 @@
         <span slot="title">用户管理</span>
       </el-menu-item>
       <el-menu-item index="/ArticleManage">
-        <i class="el-icon-document"></i>
+        <i class="el-icon-menu"></i>
         <span slot="title">文章管理</span>
       </el-menu-item>
       <el-menu-item index="/CommentsManage">
         <i class="el-icon-document"></i>
         <span slot="title">评论管理</span>
       </el-menu-item>
+      <el-menu-item index="/MessageManage">
+        <i class="el-icon-s-comment"></i>
+        <span slot="title">留言管理</span>
+      </el-menu-item>
       <el-menu-item index="/GoodsManage">
-        <i class="el-icon-menu"></i>
+        <i class="el-icon-goods"></i>
         <span slot="title">商品管理</span>
       </el-menu-item>
     </el-menu>
@@ -64,7 +68,7 @@
   align-content: center;
   color: #fff;
   font-size: 17px;
-  
+  /* position: fixed; */
 }
 .manager-aside{
   background-color: #333744;

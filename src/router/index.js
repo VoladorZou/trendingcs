@@ -14,6 +14,7 @@ import Management from "../views/Manager/Management"
 import UserList from "../views/Manager/UserList"
 import ArticleManage from "../views/Manager/ArticleManage"
 import CommentsManage from "../views/Manager/CommentsManage"
+import MessageManage from "../views/Manager/MessageManage"
 import GoodsManage from "../views/Manager/GoodsManage"
 import ArticleDetail from "../views/Article/ArticleDetail"
 import Markdown from "../components/Markdown.vue"
@@ -104,6 +105,11 @@ const routes = [
       path: '/ArticleManage',
       name: 'ArticleManage',
       component: ArticleManage
+    },
+    {
+      path: '/MessageManage',
+      name: 'MessageManage',
+      component: MessageManage
     },
     {
       path: '/CommentsManage',
